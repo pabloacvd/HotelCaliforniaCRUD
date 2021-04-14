@@ -27,14 +27,14 @@ CREATE TABLE IF NOT EXISTS `habitaciones` (
   PRIMARY KEY (`idHabitacion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- Volcando datos para la tabla hotel.habitaciones: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla hotel.habitaciones: ~10 rows (aproximadamente)
 /*!40000 ALTER TABLE `habitaciones` DISABLE KEYS */;
 REPLACE INTO `habitaciones` (`idHabitacion`, `capacidad`, `nroHabitacion`, `codReserva`, `disponible`) VALUES
 	(1, 2, '1A', 3, 0),
 	(2, 4, '1B', 2, 0),
 	(3, 6, '1C', NULL, 1),
 	(4, 2, '2A', 1, 0),
-	(5, 4, '2B', NULL, 1),
+	(5, 4, '2B', 88, 0),
 	(6, 6, '2C', NULL, 1),
 	(7, 2, '3A', NULL, 1),
 	(8, 4, '3B', NULL, 1),
@@ -49,10 +49,11 @@ CREATE TABLE IF NOT EXISTS `habitacionesxreserva` (
   PRIMARY KEY (`codReserva`,`idHabitacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- Volcando datos para la tabla hotel.habitacionesxreserva: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla hotel.habitacionesxreserva: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `habitacionesxreserva` DISABLE KEYS */;
 REPLACE INTO `habitacionesxreserva` (`codReserva`, `idHabitacion`) VALUES
 	(1, 4),
+	(2, 1),
 	(2, 2),
 	(3, 1);
 /*!40000 ALTER TABLE `habitacionesxreserva` ENABLE KEYS */;
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `huespedes` (
   PRIMARY KEY (`idHuesped`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- Volcando datos para la tabla hotel.huespedes: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla hotel.huespedes: ~6 rows (aproximadamente)
 /*!40000 ALTER TABLE `huespedes` DISABLE KEYS */;
 REPLACE INTO `huespedes` (`idHuesped`, `nombre`, `email`, `telefono`, `codReserva`, `idHabitacion`) VALUES
 	(1, 'pablo', 'mail@empresa.com', '213123', 1, 4),
@@ -76,7 +77,12 @@ REPLACE INTO `huespedes` (`idHuesped`, `nombre`, `email`, `telefono`, `codReserv
 	(3, 'luz', 'ffff@empre.sa', '2323', 3, 1),
 	(4, 'asdf', 'asdfff', 'ffff', NULL, NULL),
 	(5, 'pepe', 'pepe@empresa.com', '1111-2233', NULL, NULL),
-	(6, 'otro pepe', 'asdf@ar.icm', 'asdffff', NULL, NULL);
+	(6, 'otro pepe', 'asdf@ar.icm', 'asdffff', NULL, NULL),
+	(7, 'test !', 'test', 'test 2', 88, NULL),
+	(8, 'test 2!', 'test', 'test 2', 88, NULL),
+	(9, 'huesped de prueba', 'test', 'test 2', 29, NULL),
+	(10, 'probando', 'probando@nuevo.metodo', '23434343', 8, NULL),
+	(11, 'a ver si funciona', 'seis@enuna.habitacion', '2029339', 9, NULL);
 /*!40000 ALTER TABLE `huespedes` ENABLE KEYS */;
 
 -- Volcando estructura para tabla hotel.huespedesxreserva
@@ -86,12 +92,14 @@ CREATE TABLE IF NOT EXISTS `huespedesxreserva` (
   PRIMARY KEY (`codReserva`,`idHuesped`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- Volcando datos para la tabla hotel.huespedesxreserva: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla hotel.huespedesxreserva: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `huespedesxreserva` DISABLE KEYS */;
 REPLACE INTO `huespedesxreserva` (`codReserva`, `idHuesped`) VALUES
 	(1, 1),
 	(2, 2),
-	(3, 3);
+	(3, 3),
+	(9, 11),
+	(88, 89);
 /*!40000 ALTER TABLE `huespedesxreserva` ENABLE KEYS */;
 
 -- Volcando estructura para tabla hotel.reservas
@@ -103,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `reservas` (
   PRIMARY KEY (`codReserva`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- Volcando datos para la tabla hotel.reservas: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla hotel.reservas: ~7 rows (aproximadamente)
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
 REPLACE INTO `reservas` (`codReserva`, `estado`, `cantidadHuespedes`, `cantidadHabitaciones`) VALUES
 	(1, 1, 1, 1),
@@ -112,7 +120,9 @@ REPLACE INTO `reservas` (`codReserva`, `estado`, `cantidadHuespedes`, `cantidadH
 	(4, 1, 3, 1),
 	(5, 1, 4, 1),
 	(6, 1, 8, 1),
-	(7, 1, 8, 1);
+	(7, 1, 8, 1),
+	(8, 1, 8, 2),
+	(9, 1, 6, 1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

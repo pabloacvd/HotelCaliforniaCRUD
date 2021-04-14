@@ -17,6 +17,7 @@ public class Main {
         for(Reserva r: hotel.getReservas())
             System.out.println("Reserva: "+r);
 
+
         System.out.println("Crear nueva reserva");
         Scanner sc = new Scanner(System.in);
         System.out.print("Nombre: ");
@@ -33,6 +34,7 @@ public class Main {
             System.out.println("Reserva creada!");
         else
             System.out.println("No se pudo crear la reserva.");
+
 
     }
 }
