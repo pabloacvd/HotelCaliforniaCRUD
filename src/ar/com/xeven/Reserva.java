@@ -30,6 +30,20 @@ public class Reserva {
             this.estado = Estado.CANCELADA;
         }
     }
+
+    private void borrarReserva(){
+        String sql = "DELETE FROM `reserva` WHERE codReserva = ?;";
+        ConexionDB conexionDB = new ConexionDB(dbName,dbUser,dbPwd,sql);
+        PreparedStatement pstmt = conexionDB.getPstmt();
+        try {
+            pstmt.setInt(1,codReserva);
+            conexionDB.ejecutar();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            conexionDB.cerrar();
+        }
+    }
     private void crearHuespedXReserva(int idHuesped){
         String sql = "INSERT INTO `huespedesxreserva` (`codReserva`, `idHuesped`) VALUES (?,?);";
         ConexionDB conexionDB = new ConexionDB(dbName,dbUser,dbPwd,sql);
