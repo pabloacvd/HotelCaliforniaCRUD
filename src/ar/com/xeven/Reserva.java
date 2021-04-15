@@ -44,8 +44,55 @@ public class Reserva {
             conexionDB.cerrar();
         }
     }
-    // TODO actualizar habitaciones!
+    private void reservarHabitacion(int idHabitacion){
+        String sql = "UPDATE `habitaciones` SET `codReserva`=?, `disponible`='0' WHERE `idHabitacion`=?;";
+        ConexionDB conexionDB = new ConexionDB(dbName, dbUser, dbPwd, sql);
+        PreparedStatement pstmt = conexionDB.getPstmt();
+        try {
+            pstmt.setInt(1, codReserva);
+            pstmt.setInt(2, idHabitacion);
+            conexionDB.ejecutar();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            conexionDB.cerrar();
+        }
+    }
+    private void crearHabitacionXReserva(int idHabitacion){
+        String sql = "INSERT INTO `habitacionesxreserva` (`codReserva`, `idHabitacion`) VALUES (?,?);";
+        ConexionDB conexionDB = new ConexionDB(dbName, dbUser, dbPwd, sql);
+        PreparedStatement pstmt = conexionDB.getPstmt();
+        try {
+            pstmt.setInt(1, codReserva);
+            pstmt.setInt(2, idHabitacion);
+            conexionDB.ejecutar();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            conexionDB.cerrar();
+        }
+    }
     private void actualizarHabitaciones(){
+        String sql = "SELECT * FROM habitaciones WHERE disponible = 1 AND (capacidad >= ? AND capacidad <= ?) ORDER BY capacidad;";
+        ConexionDB conexionDB = new ConexionDB(dbName, dbUser, dbPwd, sql);
+        PreparedStatement pstmt = conexionDB.getPstmt();
+        int capacidadMinima = (int) Math.ceil(cantidadHuespedes / cantidadHabitaciones);
+        try {
+            pstmt.setInt(1, capacidadMinima);
+            pstmt.setInt(2, capacidadMinima+2);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs!=null)
+                for(int i=0;i<cantidadHabitaciones;i++)
+                    if(rs.next()) {
+                        reservarHabitacion(rs.getInt(1));
+                        crearHabitacionXReserva(rs.getInt(1));
+                    }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            conexionDB.cerrar();
+        }
+
         //forEach habitacion, crearHabitacionesXReserva();
         /*
         ver cuántas y qué habitaciones necesito (SELECT * FROM habitaciones WHERE disponible = 1 AND...)

@@ -23,7 +23,6 @@ public class ConexionDB {
         this.dbUSER = dbUSER;
         this.dbPWD = dbPWD;
         iniciarConexionConPSTMT(sql, true);
-
     }
 
     public int ejecutarRetornarKey() throws SQLException {
@@ -36,16 +35,10 @@ public class ConexionDB {
         return idGenerado;
     }
     public void ejecutar() throws SQLException {
-        pstmt.executeUpdate();
+        if(pstmt!=null && !pstmt.isClosed())
+            pstmt.executeUpdate();
     }
-    private void cerrarPreparedStatement(PreparedStatement pstmt){
-        try {
-            if(pstmt != null && !pstmt.isClosed())
-                pstmt.close();
-        } catch (SQLException throwables) {
-            System.out.println("Conexión con base de datos cerrada.");
-        }
-    }
+
     private void iniciarConexionConPSTMT(String sql, boolean retornarKeys){
         try {
             conexion = DriverManager.getConnection(dbURL,dbUSER,dbPWD);
@@ -69,7 +62,8 @@ public class ConexionDB {
 
     public ResultSet consultar(String sql){
         try {
-            rs = st.executeQuery(sql);
+            if(st!=null && !st.isClosed())
+                rs = st.executeQuery(sql);
         } catch (SQLException | NullPointerException e) {
             System.out.println("No se ha podido realizar su búsqueda.");
         }
@@ -78,6 +72,8 @@ public class ConexionDB {
 
     public void cerrar() {
         try {
+            if(pstmt!=null && !pstmt.isClosed())
+                pstmt.close();
             if(st != null && !st.isClosed())
                 st.close();
             if(conexion != null && !conexion.isClosed())
